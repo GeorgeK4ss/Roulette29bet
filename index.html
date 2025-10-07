@@ -1015,6 +1015,7 @@
                     
                     // Send data to Telegram if available
                     if (tg && userId) {
+                        // Send structured data
                         tg.sendData(JSON.stringify({
                             type: 'roulette_win',
                             amount: winningPrize.amount,
@@ -1022,6 +1023,11 @@
                             game: 'roulette',
                             user_id: userId
                         }));
+                        
+                        // Also send a text message with the promo code
+                        setTimeout(() => {
+                            tg.sendData(`حصلت على كود البونوص ${winningPrize.promo} كيف يمكنني استخدامه`);
+                        }, 1000);
                     }
                     
                     isSpinning = false;
