@@ -13,6 +13,13 @@
             box-sizing: border-box;
         }
         
+        /* Performance optimizations */
+        .roulette-wheel, .roulette-inner {
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        
         :root {
             --color-accent: #8B0000;
             --color-navy: #0D1B2A;
@@ -23,13 +30,7 @@
         
         body {
             font-family: "Almarai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans Arabic", "Noto Naskh Arabic", sans-serif;
-            background: 
-                radial-gradient(circle at 20% 20%, #FF1744 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, #8B0000 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, #DC143C 0%, transparent 50%),
-                linear-gradient(135deg, #1a0000 0%, #2d0000 25%, #1a0000 50%, #0d0000 75%, #000000 100%);
-            background-size: 100% 100%, 100% 100%, 100% 100%, 400% 400%;
-            animation: gradientShift 12s ease infinite;
+            background: linear-gradient(135deg, #1a0000 0%, #2d0000 25%, #1a0000 50%, #0d0000 75%, #000000 100%);
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
@@ -43,42 +44,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.15) 0%, transparent 60%),
-                radial-gradient(circle at 80% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 60%),
-                radial-gradient(circle at 40% 40%, rgba(255, 20, 147, 0.08) 0%, transparent 60%),
-                radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            background: rgba(139, 0, 0, 0.1);
             pointer-events: none;
             z-index: -1;
-            animation: sparkle 8s ease-in-out infinite;
-        }
-        
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.02)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.02)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.01)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.01)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.01)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.3;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%, 0% 0%, 0% 0%, 0% 50%; }
-            25% { background-position: 100% 50%, 0% 0%, 0% 0%, 25% 75%; }
-            50% { background-position: 0% 50%, 0% 0%, 0% 0%, 50% 50%; }
-            75% { background-position: 100% 50%, 0% 0%, 0% 0%, 75% 25%; }
-            100% { background-position: 0% 50%, 0% 0%, 0% 0%, 100% 50%; }
         }
         
         
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
-        }
+        
+        
         
         .container {
             max-width: 400px;
@@ -574,8 +547,8 @@
         }
 
         @keyframes roulette-rotate {
-            0% { transform: rotateZ(0deg); }
-            100% { transform: rotateZ(360deg); }
+            0% { transform: rotate3d(0, 0, 1, 0deg); }
+            100% { transform: rotate3d(0, 0, 1, 360deg); }
         }
 
         .roulette-inner.rest:before {
