@@ -631,9 +631,9 @@
             color: #111827;
         }
 
-        .whatsapp-btn {
+        .telegram-btn {
             display: inline-block;
-            background: linear-gradient(145deg, #25D366, #128C7E);
+            background: linear-gradient(145deg, #0088cc, #0066aa);
             color: white;
             padding: 12px 20px;
             border-radius: 25px;
@@ -641,14 +641,14 @@
             font-weight: bold;
             margin-top: 15px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        .whatsapp-btn:hover {
+        .telegram-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-            background: linear-gradient(145deg, #2EE66A, #1A9B8A);
+            box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4);
+            background: linear-gradient(145deg, #0099dd, #0077bb);
         }
 
         .game-menu {
@@ -780,9 +780,11 @@
                     <div id="prizeAmount" class="text-2xl font-bold text-red-600"></div>
                     <div class="promo-code" id="promoCode"></div>
                     <p class="text-xs text-gray-500 mt-2">احتفظ بهذا الكود واستخدمه عند التسجيل</p>
-                    <a href="https://wa.me/447723342065?text=حصلت%20على%20كود%20الخصم%20الخاص%20بي،%20كيف%20يمكنني%20استخدامه؟" 
-                       class="whatsapp-btn" target="_blank">
-                        💬 تواصل معنا عبر واتساب
+                    <a href="#" 
+                       id="telegramBtn" 
+                       class="telegram-btn" 
+                       target="_blank">
+                        ✈️ أرسل الكود عبر تيليجرام
                     </a>
                 </div>
             </div>
@@ -933,6 +935,13 @@
                     if (prizeAmount) prizeAmount.textContent = `$${winningPrize.amount}`;
                     if (promoCode) promoCode.textContent = winningPrize.promo;
                     
+                    // Update Telegram button with promo code
+                    const telegramBtn = document.getElementById('telegramBtn');
+                    if (telegramBtn && winningPrize.promo) {
+                        const message = encodeURIComponent(`مرحباً، حصلت على كود الخصم: ${winningPrize.promo}`);
+                        telegramBtn.href = `https://t.me/Abdulaziz29bet?text=${message}`;
+                    }
+                    
                     if (wheelResult) {
                         wheelResult.classList.remove('hidden');
                         wheelResult.classList.add('show');
@@ -940,11 +949,11 @@
                         wheelResult.style.opacity = '1';
                         wheelResult.style.visibility = 'visible';
                         
-                        // Smooth scroll to the WhatsApp button after a short delay
+                        // Smooth scroll to the Telegram button after a short delay
                         setTimeout(() => {
-                            const whatsappBtn = document.querySelector('.whatsapp-btn');
-                            if (whatsappBtn) {
-                                whatsappBtn.scrollIntoView({ 
+                            const telegramBtn = document.querySelector('.telegram-btn');
+                            if (telegramBtn) {
+                                telegramBtn.scrollIntoView({ 
                                     behavior: 'smooth', 
                                     block: 'center' 
                                 });
