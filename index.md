@@ -3,7 +3,7 @@
 > عجلة مكافآت مجانية لزوار كازينو 29Bet. دورة واحدة مجانية تمنح مكافأة نقدية
 > تتراوح بين 5 و 100 دولار، مع كود ترويجي فريد يُفعَّل عبر واتساب.
 
-- **الصفحة:** https://roulettewheelbonus.com/
+- **الصفحة:** https://www.roulettewheelbonus.com/
 - **الموقع:** roulettewheelbonus.com
 - **العلامة التجارية:** 29Bet — كازينو أونلاين ومنصة رهانات رياضية
 - **اللغة:** العربية
@@ -88,4 +88,4 @@ Crazy Time، Lightning Storm.
 ---
 
 *نسخة Markdown من الصفحة، مخصصة لوكلاء الذكاء الاصطناعي. النسخة الكاملة:*
-*https://roulettewheelbonus.com/*
+*https://www.roulettewheelbonus.com/*

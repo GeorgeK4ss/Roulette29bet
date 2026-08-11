@@ -21,4 +21,4 @@ User-agent: *
 Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
-Sitemap: https://roulettewheelbonus.com/sitemap.xml
+Sitemap: https://www.roulettewheelbonus.com/sitemap.xml

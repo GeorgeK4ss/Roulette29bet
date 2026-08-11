@@ -1,4 +1,4 @@
-# roulettewheelbonus.com
+# www.roulettewheelbonus.com
 
 Standalone Arabic bonus-wheel landing page for 29Bet. One page, no framework,
 no build step — static files served by Caddy in a container.
@@ -8,8 +8,18 @@ no build step — static files served by Caddy in a container.
 Railway auto-detects the `Dockerfile`. Nothing else to configure.
 
 1. New Project → Deploy from GitHub → this repo
-2. Add the custom domain `roulettewheelbonus.com` in Railway → Settings → Networking
-3. Point the domain's DNS at the CNAME Railway gives you
+2. Add the custom domain **`www.roulettewheelbonus.com`** in Railway → Settings → Networking
+3. In Hostinger DNS: `CNAME  www  →  <your>.up.railway.app`
+
+### Why www and not the apex
+
+The apex `roulettewheelbonus.com` hosts a different site and keeps its A
+records. DNS forbids a CNAME/ALIAS on a name that already has A records, so
+the apex cannot point at Railway. The wheel therefore lives on `www`, and
+every canonical / OG / sitemap URL uses `https://www.roulettewheelbonus.com/`.
+
+Do **not** add an apex→www or www→apex redirect here — the apex is somebody
+else's site.
 
 `$PORT` is supplied by Railway; the Caddyfile reads it. TLS is terminated at
 Railway's edge, which is why `auto_https off` is set.
