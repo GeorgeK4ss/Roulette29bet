@@ -1,0 +1,17 @@
+{
+  "name": "عجلة مكافآت 29Bet",
+  "short_name": "29Bet",
+  "description": "دوّر العجلة واربح مكافأة ترحيبية من كازينو 29Bet.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6F7FA",
+  "theme_color": "#F6F7FA",
+  "icons": [
+    { "src": "assets/img/favicon-32.png",       "sizes": "32x32",   "type": "image/png" },
+    { "src": "assets/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/img/dice.svg",             "sizes": "any",     "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

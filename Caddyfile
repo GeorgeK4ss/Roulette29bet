@@ -1,0 +1,48 @@
+# Railway sets $PORT. auto_https off because Railway terminates TLS at its edge.
+{
+	admin off
+	auto_https off
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "geolocation=(), microphone=(), camera=()"
+		Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+		Cross-Origin-Opener-Policy "same-origin"
+		# Scoped to exactly what the page loads: Google Fonts + Meta Pixel.
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; connect-src 'self' https://www.facebook.com; frame-src https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self' https://www.facebook.com; frame-ancestors 'self'; upgrade-insecure-requests"
+		# The same URL can return HTML or Markdown depending on Accept.
+		Vary "Accept"
+		-Server
+	}
+
+	# --- Markdown for AI agents ---
+	# Agents sending "Accept: text/markdown" get index.md; browsers never match.
+	@wants_markdown {
+		header Accept *text/markdown*
+		path / /index.html
+	}
+	rewrite @wants_markdown /index.md
+
+	@md path *.md
+	header @md Content-Type "text/markdown; charset=utf-8"
+
+	# --- Caching ---
+	# CSS/JS carry ?v= so they can cache hard; HTML/MD must revalidate.
+	@immutable path *.css *.js *.woff2 *.webp *.png *.jpg *.jpeg *.svg *.ico
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	@revalidate path / /index.html /index.md /robots.txt /sitemap.xml /llms.txt
+	header @revalidate Cache-Control "no-cache, must-revalidate"
+
+	file_server
+}

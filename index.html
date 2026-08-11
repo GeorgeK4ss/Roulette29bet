@@ -1,1060 +1,377 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 روليت 29Bet</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        /* Performance optimizations */
-        .roulette-wheel, .roulette-inner {
-            will-change: transform;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-        
-        :root {
-            --color-accent: #8B0000;
-            --color-navy: #0D1B2A;
-            --color-bg: #FAFAFC;
-            --color-card: #FFFFFF;
-            --color-ink: #0F172A;
-        }
-        
-        body {
-            font-family: "Almarai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans Arabic", "Noto Naskh Arabic", sans-serif;
-            background: linear-gradient(135deg, #1a0000 0%, #2d0000 25%, #1a0000 50%, #0d0000 75%, #000000 100%);
-            min-height: 100vh;
-            color: white;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(139, 0, 0, 0.1);
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        
-        
-        
-        
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .header {
-            margin-bottom: 40px;
-            text-align: center;
-            position: relative;
-        }
-        
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120%;
-            height: 120%;
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.1), rgba(255, 69, 0, 0.05));
-            border-radius: 30px;
-            backdrop-filter: blur(20px);
-            z-index: -1;
-            animation: pulse 4s ease-in-out infinite;
-        }
-        
-        .header img {
-            max-width: 200px;
-            height: auto;
-            margin: -50px 0 -60px 0;
-        }
-        
-        .header img:hover {
-            transform: scale(1.05);
-        }
-        
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.95;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.3; }
-            50% { transform: translateX(-50%) scale(1.05); opacity: 0.5; }
-        }
-        
-        @keyframes gradientText {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.5; transform: scale(1) rotate(0deg); }
-            50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
-        }
-        
-        .game-container {
-            background: 
-                linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05)),
-                linear-gradient(45deg, rgba(139, 0, 0, 0.2), rgba(220, 20, 60, 0.15), rgba(255, 69, 0, 0.1));
-            border-radius: 30px;
-            padding: 35px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(25px) saturate(180%);
-            border: 2px solid rgba(255, 215, 0, 0.4);
-            box-shadow: 
-                0 25px 50px rgba(139, 0, 0, 0.4),
-                0 10px 20px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-            transform: perspective(1000px) rotateX(2deg);
-            transition: all 0.3s ease;
-        }
-        
-        .game-container:hover {
-            transform: perspective(1000px) rotateX(0deg) translateY(-5px);
-            box-shadow: 
-                0 35px 70px rgba(139, 0, 0, 0.5),
-                0 15px 30px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        }
-        
-        .game-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, 
-                transparent, 
-                rgba(255, 215, 0, 0.1), 
-                transparent, 
-                rgba(255, 69, 0, 0.1), 
-                transparent);
-            animation: rotate 15s linear infinite;
-            pointer-events: none;
-        }
-        
-        .game-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 30% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(255, 69, 0, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-            border-radius: 30px;
-        }
-        
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .card {
-            background: 
-                linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1)),
-                linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: #111827;
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.3),
-                0 8px 16px rgba(139, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-            border-radius: 30px;
-            padding: 30px;
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(20px) saturate(150%);
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.4),
-                0 12px 24px rgba(139, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5);
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, 
-                rgba(255, 215, 0, 0.05), 
-                transparent, 
-                rgba(255, 69, 0, 0.05));
-            border-radius: 30px;
-            pointer-events: none;
-        }
-        
-        /* Roulette Wheel Styles */
-        .roulette-main {
-            width: 100%;
-            max-width: 330px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-        .roulette-plate {
-            background: 
-                radial-gradient(circle at 30% 30%, #3a3a3a, #2a2a2a),
-                linear-gradient(145deg, #2c2c2c, #1a1a1a);
-            width: min(300px, 80vw);
-            height: min(300px, 80vw);
-            margin: 12px;
-            border-radius: 50%;
-            position: relative;
-            animation: roulette-rotate 24s infinite linear;
-            box-shadow: 
-                0 0 40px rgba(139, 0, 0, 0.6),
-                0 0 80px rgba(255, 215, 0, 0.3),
-                inset 0 0 30px rgba(0, 0, 0, 0.4),
-                inset 0 0 60px rgba(255, 215, 0, 0.1);
-            border: 3px solid rgba(255, 215, 0, 0.4);
-        }
-        
-        .roulette-plate.rest {
-            background-color: gray;
-            animation: none;
-        }
+<!-- ============================================================
+     IMPORTANT — set these to the real deployed URL before going live.
+     They appear in <link rel="canonical">, og:url, twitter:url,
+     sitemap.xml and robots.txt. A wrong canonical is worse than none.
+     ============================================================ -->
 
-        .roulette-plate:after,
-        .roulette-plate:before {
-            content: '';
-            display: block;
-            position: absolute;
-            border-radius: 50%;
-        }
+<title>كازينو 29Bet — دوّر العجلة واربح مكافأة ترحيبية</title>
+<meta name="description" content="كازينو 29Bet أونلاين: سلوتس، روليت، بلاك جاك وكازينو مباشر، ورهانات رياضية. دوّر عجلة المكافآت مجانًا واستلم كود مكافأتك عبر واتساب.">
+<meta name="keywords" content="كازينو 29bet, كازينو أونلاين, سلوتس, روليت, بلاك جاك, كازينو مباشر, رهانات رياضية, مكافأة ترحيبية, عجلة الحظ">
+<meta name="author" content="29Bet">
 
-        .roulette-plate:after {
-            top: -6px;
-            right: -6px;
-            bottom: -6px;
-            left: -6px;
-            border: 6px solid #FFD700;
-            box-shadow: inset 0px 0px 0px 2px #B8860B, 0px 0px 0px 2px #FFEF94;
-        }
+<link rel="canonical" href="https://roulettewheelbonus.com/">
+<link rel="alternate" hreflang="ar" href="https://roulettewheelbonus.com/">
+<link rel="alternate" hreflang="x-default" href="https://roulettewheelbonus.com/">
 
-        .roulette-plate:before {
-            background: rgba(0,0,0,.65);
-            border: 1px solid #C0C0C0;
-            box-shadow: inset 0px 0px 0px 2px #A0A0A0;
-            top: 12%;
-            left: 12%;
-            right: 12%;
-            bottom: 12%;
-            z-index: 1;
-        }
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#F6F7FA">
+<meta name="rating" content="adult">
 
-        .roulette-number {
-            width: calc(min(300px, 80vw) / 11);
-            height: calc(min(300px, 80vw) / 2);
-            display: inline-block;
-            text-align: center;
-            position: absolute;
-            top: 0;
-            left: calc(50% - calc(min(300px, 80vw) / 22));
-            transform-origin: 50% 100%;
-            background-color: transparent;
-            border-left: calc(min(300px, 80vw) / 22) solid transparent;
-            border-right: calc(min(300px, 80vw) / 22) solid transparent;
-            border-top: calc(min(300px, 80vw) / 2) solid black;
-            box-sizing: border-box;
-        }
+<!-- Open Graph — these drive the link preview when the page is shared on WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="عجلة مكافآت 29Bet">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:url" content="https://roulettewheelbonus.com/">
+<meta property="og:title" content="كازينو 29Bet — دوّر العجلة واربح مكافأتك الترحيبية">
+<meta property="og:description" content="سلوتس، روليت، بلاك جاك وكازينو مباشر. دوّر عجلة المكافآت مجانًا واستلم كودك، ثم فعّله عبر واتساب.">
+<meta property="og:image" content="https://roulettewheelbonus.com/assets/img/og.jpg">
+<meta property="og:image:secure_url" content="https://roulettewheelbonus.com/assets/img/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="عجلة مكافآت 29Bet مع مبالغ بالدولار">
 
-        .roulette-number:nth-child(odd) { border-top-color: #8B0000; }
-        .roulette-number:nth-child(even) { border-top-color: #000; }
-        .roulette-number:nth-child(37) { border-top-color: #228B22; }
-        
-        .roulette-inner.rest .roulette-number {
-            opacity: 1;
-            visibility: visible;
-        }
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://roulettewheelbonus.com/">
+<meta name="twitter:title" content="كازينو 29Bet — دوّر العجلة واربح مكافأتك الترحيبية">
+<meta name="twitter:description" content="سلوتس، روليت، بلاك جاك وكازينو مباشر. دوّر عجلة المكافآت مجانًا واستلم كودك عبر واتساب.">
+<meta name="twitter:image" content="https://roulettewheelbonus.com/assets/img/og.jpg">
+<meta name="twitter:image:alt" content="عجلة مكافآت 29Bet مع مبالغ بالدولار">
 
-        .roulette-pit {
-            color: #fff;
-            padding-top: calc(min(300px, 80vw) / 30);
-            width: calc(min(300px, 80vw) / 11);
-            display: inline-block;
-            font-size: calc(min(300px, 80vw) / 30);
-            transform: scale(1, 1.8);
-            position: absolute;
-            top: calc(-1 * min(300px, 80vw) / 2);
-            left: calc(-1 * min(300px, 80vw) / 22);
-            font-weight: bold;
-        }
+<link rel="icon" href="assets/img/dice.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="alternate" type="text/markdown" href="index.md" title="Markdown version for AI agents">
 
-        .roulette-inner {
-            display: block;
-            height: min(300px, 80vw);
-            width: min(300px, 80vw);
-            position: relative;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/img/logo.webp">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css?v=20260810">
 
-        .roulette-inner:after,
-        .roulette-inner:before {
-            content: '';
-            display: block;
-            position: absolute;
-            border-radius: 50%;
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://29bet.net/#organization",
+      "name": "29Bet",
+      "alternateName": "كازينو 29Bet",
+      "url": "https://29bet.net/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://roulettewheelbonus.com/assets/img/logo.webp"
+      },
+      "description": "كازينو أونلاين ومنصة رهانات رياضية باللغة العربية.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "telephone": "+359878299093",
+        "availableLanguage": ["ar", "en"]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://roulettewheelbonus.com/#website",
+      "url": "https://roulettewheelbonus.com/",
+      "name": "عجلة مكافآت 29Bet",
+      "inLanguage": "ar",
+      "publisher": { "@id": "https://29bet.net/#organization" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://roulettewheelbonus.com/#webpage",
+      "url": "https://roulettewheelbonus.com/",
+      "name": "كازينو 29Bet — دوّر العجلة واربح مكافأة ترحيبية",
+      "isPartOf": { "@id": "https://roulettewheelbonus.com/#website" },
+      "about": { "@id": "https://29bet.net/#organization" },
+      "inLanguage": "ar",
+      "datePublished": "2026-08-10",
+      "dateModified": "2026-08-10",
+      "description": "عجلة مكافآت مجانية لزوار كازينو 29Bet: دوّر العجلة واحصل على كود مكافأة نقدية بين 5 و 100 دولار، ثم فعّله عبر واتساب.",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://roulettewheelbonus.com/assets/img/og.jpg",
+        "width": 1200,
+        "height": 630
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://roulettewheelbonus.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "كيف أبدأ اللعب في كازينو 29Bet؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "دوّر العجلة في أعلى الصفحة واحصل على كود المكافأة الخاص بك، ثم أرسله عبر واتساب. سيساعدك فريق الدعم في إنشاء حسابك وتفعيل المكافأة خطوة بخطوة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما هي الألعاب المتاحة في 29Bet؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "سلوتس، روليت، بلاك جاك، بوكر، وكازينو مباشر مع موزعين حقيقيين، بالإضافة إلى الرهانات الرياضية على أهم المباريات والبطولات."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف أستخدم كود المكافأة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "كل كود يصدر مرة واحدة فقط ويخصّك أنت. احتفظ به وأرسله لفريق الدعم عبر واتساب، وسيتم تفعيل المكافأة في حسابك على 29Bet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يمكنني اللعب من الجوال؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم. 29Bet يعمل مباشرة من متصفح الجوال دون الحاجة إلى تحميل أي تطبيق، ويدعم أنظمة أندرويد و iOS."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما هي طرق الإيداع والسحب؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يدعم 29Bet البطاقات البنكية والمحافظ الإلكترونية والعملات الرقمية. سيوضح لك فريق الدعم الطريقة الأنسب لبلدك عبر واتساب."
+          }
         }
+      ]
+    }
+  ]
+}
+</script>
 
-        .roulette-inner:after {
-            z-index: 3;
-            top: 24%;
-            right: 24%;
-            bottom: 24%;
-            left: 24%;
-            background-color: #2F2F2F;
-            border: 3px solid #A0A0A0;
-        }
-
-        .roulette-inner:before {
-            top: 0%;
-            bottom: 0%;
-            left: 0%;
-            right: 0%;
-            content: '';
-            color: #fff;
-            font-size: 20px;
-            z-index: 5;
-            border-radius: 0;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            transform-origin: center;
-            padding-top: 40px;
-        }
-
-        .roulette-data {
-            display: block;
-            position: absolute;
-            top: 30%;
-            right: 30%;
-            bottom: 30%;
-            left: 30%;
-            border-radius: 50%;
-            animation: roulette-rotate 24s reverse linear infinite;
-            perspective: 2000px;
-            z-index: 100;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border: 3px solid #FFD700;
-            box-shadow: 
-              0 0 20px rgba(255, 215, 0, 0.3),
-              inset 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .roulette-data-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform-style: preserve-3d;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .roulette-data.reveal .roulette-data-inner {
-            transform: rotateY(180deg);
-        }
-
-        .roulette-mask,
-        .roulette-result {
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            position: absolute;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .roulette-mask {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: #ecf0f1;
-            font-size: 16px;
-            font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            letter-spacing: 1px;
-            border: 2px solid #3498db;
-            box-shadow: inset 0 0 15px rgba(52, 152, 219, 0.2);
-            backface-visibility: hidden;
-            transform: rotateY(0deg);
-        }
-
-        .roulette-result {
-            background: linear-gradient(135deg, #ae2727 0%, #e00000 100%);
-            color: white;
-            transform: rotateY(180deg);
-            border: 2px solid #f39c12;
-            box-shadow: 
-              0 0 25px rgba(39, 174, 96, 0.4),
-              inset 0 0 15px rgba(255, 255, 255, 0.1);
-            backface-visibility: hidden;
-        }
-
-        .roulette-data.reveal .roulette-result {
-            backface-visibility: visible;
-        }
-
-        .roulette-result-amount {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1;
-            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-            color: #f1c40f;
-            -webkit-text-stroke: 1px #e67e22;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-
-        .roulette-btn {
-            background: 
-                linear-gradient(145deg, #FF1744, #DC143C, #8B0000),
-                linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
-            border: 3px solid #FFD700;
-            padding: 18px 40px;
-            margin: 15px;
-            display: inline-block;
-            font-size: 18px;
-            width: min(220px, 60vw);
-            cursor: pointer;
-            color: #fff;
-            font-family: 'Almarai', sans-serif;
-            border-radius: 35px;
-            font-weight: 800;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 
-                0 12px 30px rgba(139, 0, 0, 0.5),
-                0 6px 15px rgba(0, 0, 0, 0.2),
-                inset 0 2px 0 rgba(255, 255, 255, 0.3),
-                inset 0 -2px 0 rgba(0, 0, 0, 0.2);
-            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 1px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .roulette-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.3), 
-                rgba(255, 215, 0, 0.2),
-                rgba(255, 255, 255, 0.3),
-                transparent);
-            transition: left 0.6s ease;
-        }
-        
-        .roulette-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
-        }
-        
-        .roulette-btn:hover::before {
-            left: 100%;
-        }
-        
-        .roulette-btn:hover::after {
-            width: 300px;
-            height: 300px;
-        }
-
-        .roulette-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 
-                0 20px 40px rgba(139, 0, 0, 0.6),
-                0 10px 20px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.4),
-                0 0 30px rgba(255, 215, 0, 0.4);
-            background: 
-                linear-gradient(145deg, #FF1744, #FF5722, #DC143C),
-                linear-gradient(45deg, rgba(255, 255, 255, 0.15), transparent);
-            border-color: #FFA500;
-        }
-        
-        .roulette-btn:active {
-            transform: translateY(-2px) scale(1.02);
-            transition: all 0.1s ease;
-        }
-
-        .roulette-btn.disabled {
-            opacity: 0.2;
-            transition: opacity 0.24s linear;
-            cursor: not-allowed;
-        }
-
-        @keyframes roulette-rotate {
-            0% { transform: rotate3d(0, 0, 1, 0deg); }
-            100% { transform: rotate3d(0, 0, 1, 360deg); }
-        }
-
-        .roulette-inner.rest:before {
-            transition: top 0.5s ease-in, right 0.5s ease-in, bottom 0.5s ease-in, left 0.5s ease-in;
-            top: 25%;
-            right: 25%;
-            bottom: 24%;
-            left: 25%;
-        }
-
-        /* Ball animation for different landing positions */
-        .roulette-inner[data-spinto='0']:before { transform: rotateZ(-2880deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='1']:before { transform: rotateZ(-2870deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='2']:before { transform: rotateZ(-2860deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='3']:before { transform: rotateZ(-2850deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='4']:before { transform: rotateZ(-2840deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='5']:before { transform: rotateZ(-2830deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='6']:before { transform: rotateZ(-2820deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='7']:before { transform: rotateZ(-2810deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='8']:before { transform: rotateZ(-2800deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='9']:before { transform: rotateZ(-2790deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='10']:before { transform: rotateZ(-2780deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='11']:before { transform: rotateZ(-2770deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='12']:before { transform: rotateZ(-2760deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='13']:before { transform: rotateZ(-2750deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='14']:before { transform: rotateZ(-2740deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='15']:before { transform: rotateZ(-2730deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='16']:before { transform: rotateZ(-2720deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='17']:before { transform: rotateZ(-2710deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='18']:before { transform: rotateZ(-2700deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='19']:before { transform: rotateZ(-2690deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='20']:before { transform: rotateZ(-2680deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='21']:before { transform: rotateZ(-2670deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='22']:before { transform: rotateZ(-2660deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='23']:before { transform: rotateZ(-2650deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='24']:before { transform: rotateZ(-2640deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='25']:before { transform: rotateZ(-2630deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='26']:before { transform: rotateZ(-2620deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='27']:before { transform: rotateZ(-2610deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='28']:before { transform: rotateZ(-2600deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='29']:before { transform: rotateZ(-2590deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='30']:before { transform: rotateZ(-2580deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='31']:before { transform: rotateZ(-2570deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='32']:before { transform: rotateZ(-2560deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='33']:before { transform: rotateZ(-2550deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='34']:before { transform: rotateZ(-2540deg); transition: transform 9s ease-out; content: '●'; }
-        .roulette-inner[data-spinto='35']:before { transform: rotateZ(-2530deg); transition: transform 9s ease-out; content: '●'; }
-
-        .wheel-result {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 2px solid var(--color-accent);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
-            color: #111827;
-        }
-
-        .wheel-result.hidden {
-            display: none;
-        }
-
-        .wheel-result.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .promo-code {
-            font-family: 'Courier New', monospace;
-            background: #e5e7eb;
-            padding: 8px 12px;
-            border-radius: 5px;
-            margin: 10px 0;
-            font-weight: bold;
-            letter-spacing: 2px;
-            color: #111827;
-        }
-
-        .telegram-btn {
-            display: inline-block;
-            background: linear-gradient(145deg, #0088cc, #0066aa);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .telegram-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4);
-            background: linear-gradient(145deg, #0099dd, #0077bb);
-        }
-
-        .game-menu {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .game-btn {
-            background: linear-gradient(145deg, rgba(139, 0, 0, 0.3), rgba(220, 20, 60, 0.2));
-            border: 2px solid rgba(255, 215, 0, 0.4);
-            color: white;
-            padding: 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: block;
-            backdrop-filter: blur(10px);
-            box-shadow: 
-                0 8px 20px rgba(139, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .game-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .game-btn:hover::before {
-            left: 100%;
-        }
-
-        .game-btn:hover {
-            background: linear-gradient(145deg, rgba(220, 20, 60, 0.4), rgba(139, 0, 0, 0.3));
-            transform: translateY(-3px);
-            box-shadow: 
-                0 12px 25px rgba(139, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 215, 0, 0.6);
-        }
-
-
-        /* Responsive adjustments */
-        @media (max-width: 480px) {
-            .roulette-plate {
-                width: min(250px, 75vw);
-                height: min(250px, 75vw);
-            }
-            
-            .roulette-inner {
-                height: min(250px, 75vw);
-                width: min(250px, 75vw);
-            }
-            
-            .roulette-number {
-                width: calc(min(250px, 75vw) / 11);
-                height: calc(min(250px, 75vw) / 2);
-                left: calc(50% - calc(min(250px, 75vw) / 22));
-                border-left: calc(min(250px, 75vw) / 22) solid transparent;
-                border-right: calc(min(250px, 75vw) / 22) solid transparent;
-                border-top: calc(min(250px, 75vw) / 2) solid black;
-            }
-            
-            .roulette-pit {
-                padding-top: calc(min(250px, 75vw) / 30);
-                width: calc(min(250px, 75vw) / 11);
-                font-size: calc(min(250px, 75vw) / 35);
-                top: calc(-1 * min(250px, 75vw) / 2);
-                left: calc(-1 * min(250px, 75vw) / 22);
-            }
-            
-            .roulette-btn {
-                width: min(150px, 45vw);
-                font-size: 14px;
-                padding: 10px;
-            }
-        }
-    </style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '627923446862461');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=627923446862461&ev=PageView&noscript=1"></noscript>
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="https://raw.githubusercontent.com/GeorgeK4ss/Roulette29bet/main/Untitled-1-02.png" alt="29Bet Logo" style="max-width: 200px; height: auto; margin: -50px 0 -60px 0;">
-            <p>دور العجلة واربح مكافأة فورية!</p>
-        </div>
-        
-        <div class="game-container">
-            <div class="card">
-                <h2 class="text-2xl font-bold mb-6 text-gray-900">🎯 اربح مكافأة مجانية!</h2>
-                <p class="text-sm text-gray-600 mb-6">دور العجلة واربح مكافأة فورية</p>
-                
-                <div class="roulette-main">
-                    <button type="button" class="roulette-btn" id="rouletteSpin">
-                        <span>🎯 دور العجلة</span>
-                    </button>
-                    <button type="button" class="roulette-btn" id="rouletteReset" style="display: none;">
-                        <span>🔄 لعبة جديدة</span>
-                    </button>
-                    
-                    <div class="roulette-plate" id="roulettePlate">
-                        <ul class="roulette-inner" id="rouletteInner">
-                            <!-- Roulette numbers will be generated by JavaScript -->
-                        </ul>
-                        <div class="roulette-data" id="rouletteData">
-                            <div class="roulette-data-inner">
-                                <div class="roulette-mask" id="rouletteMask">29bet</div>
-                                <div class="roulette-result">
-                                    <div class="roulette-result-amount" id="rouletteResultAmount">$0</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="wheelResult" class="wheel-result hidden">
-                    <h4 class="font-bold text-lg text-green-600">🎉 مبروك!</h4>
-                    <p class="text-sm text-gray-700">لقد ربحت:</p>
-                    <div id="prizeAmount" class="text-2xl font-bold text-red-600"></div>
-                    <div class="promo-code" id="promoCode"></div>
-                    <p class="text-xs text-gray-500 mt-2">احتفظ بهذا الكود واستخدمه عند التسجيل</p>
-                    <a href="#" 
-                       id="telegramBtn" 
-                       class="telegram-btn" 
-                       target="_blank">
-                        ✈️ أرسل الكود عبر تيليجرام
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        
+<a class="skip-link" href="#wheel-section">تخطَّ إلى عجلة المكافآت</a>
+
+<header class="site-header">
+  <img src="assets/img/logo.webp" alt="شعار كازينو 29Bet" width="172" height="48" fetchpriority="high">
+</header>
+
+<main id="main" class="wrap">
+
+  <section class="hero">
+    <span class="kicker">🎰 كازينو أونلاين ورهانات رياضية</span>
+    <h1>أهلاً بك في <span class="hl">كازينو 29Bet</span></h1>
+    <p>سلوتس، روليت، بلاك جاك، بوكر وكازينو مباشر مع موزعين حقيقيين — وقبل أن تبدأ، دوّر العجلة واربح مكافأتك الترحيبية 🎁</p>
+  </section>
+
+  <!-- Casino games, right up top so the visitor sees where they are.
+       These tiles are static HTML on purpose: crawlers that do not run
+       JavaScript still read the game names. JS only clones this set once
+       more to make the marquee loop seamlessly. -->
+  <section class="sec sec-tight" aria-label="ألعاب الكازينو في 29Bet">
+    <div class="marquee">
+      <div class="marquee-track" id="gamesTrack">
+        <div class="game-tile"><img src="assets/games/game-01.webp" alt="Sweet Bonanza 1000 — لعبة سلوتس في كازينو 29Bet" width="440" height="310" decoding="async" fetchpriority="high"></div>
+        <div class="game-tile"><img src="assets/games/game-02.webp" alt="40 Shining Crown — لعبة سلوتس في كازينو 29Bet" width="440" height="310" decoding="async"></div>
+        <div class="game-tile"><img src="assets/games/game-03.webp" alt="Gates of Olympus 1000 — لعبة سلوتس في كازينو 29Bet" width="440" height="310" decoding="async"></div>
+        <div class="game-tile"><img src="assets/games/game-04.webp" alt="VIP Roulette — روليت مباشر في كازينو 29Bet" width="440" height="310" decoding="async"></div>
+        <div class="game-tile"><img src="assets/games/game-05.webp" alt="Immersive Roulette — روليت مباشر في كازينو 29Bet" width="440" height="310" loading="lazy" decoding="async"></div>
+        <div class="game-tile"><img src="assets/games/game-06.webp" alt="روليت بالعربي — طاولة روليت عربية مباشرة" width="440" height="310" loading="lazy" decoding="async"></div>
+        <div class="game-tile"><img src="assets/games/game-07.webp" alt="الروليت العربي المباشر — كازينو مباشر مع موزع عربي" width="440" height="310" loading="lazy" decoding="async"></div>
+        <div class="game-tile"><img src="assets/games/game-08.webp" alt="Blackjack — بلاك جاك مباشر في كازينو 29Bet" width="440" height="310" loading="lazy" decoding="async"></div>
+        <div class="game-tile"><img src="assets/games/game-09.webp" alt="Crazy Time — لعبة كازينو مباشر في 29Bet" width="440" height="310" loading="lazy" decoding="async"></div>
+        <div class="game-tile"><img src="assets/games/game-10.webp" alt="Lightning Storm — لعبة كازينو مباشر في 29Bet" width="440" height="310" loading="lazy" decoding="async"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tells the visitor what the wheel is and exactly what to do -->
+  <section class="sec" style="margin-top:22px">
+    <div class="sec-head">
+      <h2>🎁 عجلة المكافآت — دورة مجانية واحدة</h2>
+      <p>هذه عجلة مكافآت خاصة بزوار 29Bet. دوّرها مرة واحدة مجانًا، وستتوقف الكرة على مكافأة نقدية تتراوح بين <strong>5 و 100 دولار</strong> تُضاف إلى حسابك. لا حاجة لأي إيداع أو تسجيل الآن — فقط ثلاث خطوات:</p>
     </div>
 
-    <script>
-        // Initialize Telegram WebApp
-        let tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
-        
-        // WebAppInfo integration for Telegram
-        console.log('WebAppInfo: Telegram WebApp initialized for Roulette');
-        
-        // Get user data from Telegram
-        const user = tg?.initDataUnsafe?.user;
-        const userId = user?.id;
-        console.log('User ID:', userId);
-        
-        // Game state
-        let isSpinning = false;
-        let hasWon = false;
-        let userPrize = null;
-        let rouletteInner, rouletteSpin, rouletteReset, rouletteData, rouletteMask;
-        let maskDefault = 'ضع رهانك';
-        let timer = 9000;
+    <ol class="steps">
+      <li><b>1</b> دوّر العجلة مجانًا</li>
+      <li><b>2</b> استلم كود المكافأة</li>
+      <li><b>3</b> أرسله عبر واتساب لتفعيله</li>
+    </ol>
+  </section>
 
-        // Store the wheel segments for consistent reading
-        let wheelSegments = [];
+  <section id="wheel-section" class="card wheel-wrap" style="margin-top:16px">
+    <div class="stage">
+      <div class="rim">
+        <div class="rim-inner">
+          <svg id="wheel" viewBox="0 0 400 400" aria-hidden="true"></svg>
+        </div>
+      </div>
 
-        // Roulette prizes with weights
-        const roulettePrizes = [
-            { amount: 5, promo: "ROULETTE52992", weight: 60 },
-            { amount: 10, promo: "ROULETTE102992", weight: 15 },
-            { amount: 15, promo: "ROULETTE152992", weight: 12 },
-            { amount: 20, promo: "ROULETTE202992", weight: 10 },
-            { amount: 25, promo: "ROULETTE252992", weight: 7 },
-            { amount: 30, promo: "ROULETTE302992", weight: 5 },
-            { amount: 50, promo: "ROULETTE502992", weight: 2 },
-            { amount: 75, promo: "ROULETTE752992", weight: 1 },
-            { amount: 100, promo: "ROULETTE1002992", weight: 1 }
-        ];
+      <div class="orbit" id="orbit"><div class="ball" id="ball"></div></div>
 
-        // Generate roulette numbers with fixed amounts
-        function createRouletteWheel() {
-            rouletteInner = document.getElementById('rouletteInner');
-            rouletteInner.innerHTML = '';
-            wheelSegments = [];
-            
-            // Fixed amounts for each segment
-            const segmentAmounts = [5, 10, 15, 20, 25, 30, 50, 75, 100, 5, 10, 15, 20, 25, 30, 50, 75, 100, 5, 10, 15, 20, 25, 30, 50, 75, 100, 5, 10, 15, 20, 25, 30, 50, 75, 100];
-            
-            // Create 36 segments
-            for (let i = 0; i < 36; i++) {
-                const amount = segmentAmounts[i];
-                const prize = roulettePrizes.find(p => p.amount === amount);
-                
-                const li = document.createElement('li');
-                li.className = 'roulette-number';
-                li.style.transform = `rotateZ(${(360/36) * i}deg)`;
-                
-                const label = document.createElement('label');
-                const input = document.createElement('input');
-                input.type = 'radio';
-                input.name = 'pit';
-                input.value = i;
-                
-                const span = document.createElement('span');
-                span.className = 'roulette-pit';
-                span.textContent = `$${amount}`;
-                
-                // Store the prize for this segment
-                wheelSegments[i] = prize;
-                
-                label.appendChild(input);
-                label.appendChild(span);
-                li.appendChild(label);
-                rouletteInner.appendChild(li);
-            }
-        }
+      <div class="hub" id="hub">
+        <div class="hub-face hub-idle">
+          <img src="assets/img/dice.svg" alt="" width="60" height="60">
+        </div>
+        <div class="hub-face hub-win" id="hubWin">$0</div>
+      </div>
+    </div>
 
-        // Weighted random selection
-        function getRandomPrize() {
-            const totalWeight = roulettePrizes.reduce((sum, prize) => sum + prize.weight, 0);
-            let random = Math.random() * totalWeight;
-            
-            for (let prize of roulettePrizes) {
-                random -= prize.weight;
-                if (random <= 0) {
-                    return prize;
-                }
-            }
-            return roulettePrizes[0]; // fallback
-        }
+    <button type="button" class="btn btn-spin" id="spinBtn">🎯 دوّر العجلة</button>
 
-        // Spin the roulette
-        function spinRoulette() {
-            if (isSpinning || hasWon) return;
-            
-            isSpinning = true;
-            const randomNumber = Math.floor(Math.random() * 36);
-            
-            // Get the actual prize from the stored segment data
-            const winningPrize = wheelSegments[randomNumber];
-            
-            // Set the ball landing position to match the segment
-            rouletteInner.setAttribute('data-spinto', randomNumber);
-            rouletteInner.querySelector(`li:nth-child(${randomNumber + 1}) input`).checked = true;
-            
-            rouletteSpin.style.display = 'none';
-            rouletteReset.classList.add('disabled');
-            rouletteReset.disabled = true;
-            rouletteReset.style.display = 'inline-block';
-            
-            setTimeout(() => {
-                rouletteMask.textContent = 'لا مزيد من الرهانات';
-            }, timer / 2);
-            
-            setTimeout(() => {
-                rouletteMask.textContent = maskDefault;
-            }, timer + 500);
-            
-            setTimeout(() => {
-                try {
-                    // Store the prize and mark as won
-                    userPrize = winningPrize;
-                    hasWon = true;
-                    
-                    rouletteReset.classList.remove('disabled');
-                    rouletteReset.disabled = false;
-                    
-                    // Show result in center
-                    const resultAmount = document.getElementById('rouletteResultAmount');
-                    if (resultAmount) resultAmount.textContent = `$${winningPrize.amount}`;
-                    rouletteData.classList.add('reveal');
-                    rouletteInner.classList.add('rest');
-                    
-                    // Show result in modal
-                    const prizeAmount = document.getElementById('prizeAmount');
-                    const promoCode = document.getElementById('promoCode');
-                    const wheelResult = document.getElementById('wheelResult');
-                    
-                    if (prizeAmount) prizeAmount.textContent = `$${winningPrize.amount}`;
-                    if (promoCode) promoCode.textContent = winningPrize.promo;
-                    
-                    // Update Telegram button with promo code
-                    const telegramBtn = document.getElementById('telegramBtn');
-                    if (telegramBtn && winningPrize.promo) {
-                        const message = encodeURIComponent(`مرحباً، حصلت على كود الخصم: ${winningPrize.promo}`);
-                        telegramBtn.href = `https://t.me/Abdulaziz29bet?text=${message}`;
-                    }
-                    
-                    if (wheelResult) {
-                        wheelResult.classList.remove('hidden');
-                        wheelResult.classList.add('show');
-                        wheelResult.style.display = 'block';
-                        wheelResult.style.opacity = '1';
-                        wheelResult.style.visibility = 'visible';
-                        
-                        // Smooth scroll to the Telegram button after a short delay
-                        setTimeout(() => {
-                            const telegramBtn = document.querySelector('.telegram-btn');
-                            if (telegramBtn) {
-                                telegramBtn.scrollIntoView({ 
-                                    behavior: 'smooth', 
-                                    block: 'center' 
-                                });
-                            }
-                        }, 500);
-                    }
-                    
-                    // Send data to Telegram if available
-                    if (tg && userId) {
-                        tg.sendData(JSON.stringify({
-                            type: 'roulette_win',
-                            amount: winningPrize.amount,
-                            promo: winningPrize.promo,
-                            game: 'roulette',
-                            user_id: userId
-                        }));
-                    }
-                    
-                    isSpinning = false;
-                } catch (error) {
-                    console.error('Error showing wheel result:', error);
-                    isSpinning = false;
-                }
-            }, timer);
-        }
+    <div class="result" id="result" role="status" aria-live="polite">
+      <h3>🎉 مبروك! ربحت مكافأة</h3>
+      <p class="amount" id="resultAmount">$0</p>
+      <p class="sub">هذا هو الكود الترويجي الخاص بك:</p>
 
-        // Reset roulette
-        function resetRoulette() {
-            rouletteInner.removeAttribute('data-spinto');
-            rouletteInner.classList.remove('rest');
-            rouletteReset.style.display = 'none';
-            rouletteSpin.style.display = 'inline-block';
-            rouletteData.classList.remove('reveal');
-            
-            const wheelResult = document.getElementById('wheelResult');
-            if (wheelResult) {
-                wheelResult.classList.add('hidden');
-                wheelResult.classList.remove('show');
-                wheelResult.style.display = '';
-                wheelResult.style.opacity = '';
-                wheelResult.style.visibility = '';
-            }
-            
-            hasWon = false;
-            userPrize = null;
-        }
+      <div class="code-row">
+        <p class="code-box" id="promoCode">—</p>
+        <button type="button" class="copy-btn" id="copyBtn">نسخ</button>
+      </div>
 
-        // Initialize wheel function
-        function initializeWheel() {
-            // Initialize roulette elements
-            rouletteInner = document.getElementById('rouletteInner');
-            rouletteSpin = document.getElementById('rouletteSpin');
-            rouletteReset = document.getElementById('rouletteReset');
-            rouletteData = document.getElementById('rouletteData');
-            rouletteMask = document.getElementById('rouletteMask');
-            
-            // Create roulette wheel
-            createRouletteWheel();
-            
-            const result = document.getElementById('wheelResult');
-            
-            if (hasWon && userPrize) {
-                // User already won in this session, show their prize
-                document.getElementById('prizeAmount').textContent = `$${userPrize.amount}`;
-                document.getElementById('promoCode').textContent = userPrize.promo;
-                result.classList.remove('hidden');
-                
-                rouletteSpin.style.display = 'none';
-                rouletteReset.style.display = 'inline-block';
-                rouletteReset.disabled = true;
-                rouletteReset.classList.add('disabled');
-            } else {
-                // User hasn't won yet, allow spinning
-                result.classList.add('hidden');
-                rouletteSpin.style.display = 'inline-block';
-                rouletteReset.style.display = 'none';
-                rouletteReset.disabled = false;
-                rouletteReset.classList.remove('disabled');
-            }
-        }
+      <a class="btn btn-wa" id="waLink" href="#" target="_blank" rel="noopener noreferrer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.71 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.8h-.01a9.8 9.8 0 0 1-4.99-1.37l-.36-.21-3.71.97 1-3.62-.24-.37a9.79 9.79 0 0 1-1.5-5.22c0-5.4 4.4-9.8 9.81-9.8 2.62 0 5.08 1.02 6.93 2.88a9.73 9.73 0 0 1 2.87 6.93c0 5.4-4.4 9.8-9.8 9.8m8.34-18.14A11.72 11.72 0 0 0 12.05 0C5.5 0 .18 5.32.17 11.86c0 2.09.55 4.13 1.59 5.93L.07 24l6.36-1.67a11.8 11.8 0 0 0 5.62 1.43h.01c6.54 0 11.86-5.32 11.87-11.86a11.8 11.8 0 0 0-3.47-8.39"/></svg>
+        <span>فعّل مكافأتك عبر واتساب</span>
+      </a>
 
-        // Initialize wheel and bind events
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the wheel when page loads
-            initializeWheel();
-            
-            // Bind roulette buttons
-            document.getElementById('rouletteSpin').addEventListener('click', spinRoulette);
-            document.getElementById('rouletteReset').addEventListener('click', resetRoulette);
-        });
+      <p class="hint">أرسل الكود لفريق الدعم وسيتم تفعيل المكافأة في حسابك على 29Bet.</p>
+    </div>
+  </section>
 
-        // Handle Telegram WebApp events if available
-        if (tg) {
-            tg.onEvent('mainButtonClicked', function() {
-                tg.close();
-            });
-            
-            // Set main button
-            tg.MainButton.setText('إغلاق اللعبة');
-            tg.MainButton.show();
-        }
-    </script>
+  <section class="sec">
+    <div class="sec-head">
+      <h2>ما هو 29Bet؟</h2>
+      <p>كازينو أونلاين ومنصة رهانات رياضية باللغة العربية</p>
+    </div>
+    <div class="prose">
+      <p><strong>29Bet</strong> هو كازينو إلكتروني ومنصة رهانات رياضية تعمل مباشرة من متصفح جوالك أو حاسوبك، بدون تحميل أي تطبيق. تجد فيه ألعاب <strong>السلوتس</strong> بمواضيع وجوائز متنوعة، طاولات <strong>الروليت</strong> و<strong>البلاك جاك</strong> و<strong>البوكر</strong>، وقسم <strong>الكازينو المباشر</strong> مع موزعين حقيقيين يبثّون على الهواء.</p>
+      <p>وإلى جانب الكازينو، يوفّر 29Bet <strong>رهانات رياضية</strong> على كرة القدم وكرة السلة والتنس وأهم البطولات العالمية، قبل انطلاق المباراة وأثناءها مباشرة.</p>
+      <p>كل ذلك مع دعم عربي متواصل، طرق إيداع وسحب مرنة، وواجهة مصممة للجوال أولًا.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head">
+      <h2>أقسام الكازينو</h2>
+      <p>اختر لعبتك المفضلة وابدأ التجربة</p>
+    </div>
+    <ul class="cats">
+      <li class="cat"><span class="emoji" aria-hidden="true">🎰</span><h3>سلوتس</h3><p>ماكينات قمار بمواضيع متنوعة وجولات مجانية.</p></li>
+      <li class="cat"><span class="emoji" aria-hidden="true">🎡</span><h3>روليت</h3><p>روليت أوروبي وأمريكي بجولات سريعة.</p></li>
+      <li class="cat"><span class="emoji" aria-hidden="true">🃏</span><h3>بلاك جاك</h3><p>طاولات بحدود رهان تناسب كل اللاعبين.</p></li>
+      <li class="cat"><span class="emoji" aria-hidden="true">♠️</span><h3>بوكر</h3><p>بوكر وألعاب ورق كلاسيكية.</p></li>
+      <li class="cat"><span class="emoji" aria-hidden="true">📹</span><h3>كازينو مباشر</h3><p>موزعون حقيقيون وبث مباشر على الهواء.</p></li>
+      <li class="cat"><span class="emoji" aria-hidden="true">⚽</span><h3>رهانات رياضية</h3><p>كرة قدم، سلة وتنس — قبل المباراة وأثناءها.</p></li>
+    </ul>
+  </section>
+
+  <section class="grid">
+    <div class="info">
+      <div class="ic" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <h3>وصول فوري ⚡️</h3>
+      <p>وصول منظّم إلى خدمات 29Bet بخطوات بسيطة.</p>
+    </div>
+    <div class="info">
+      <div class="ic" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12H7a2 2 0 00-2 2v3a2 2 0 002 2h14v-7zM7 12V7a2 2 0 012-2h11v7H9a2 2 0 01-2-2z"/></svg>
+      </div>
+      <h3>إيداع وسحب سهل 💳</h3>
+      <p>طرق دفع مرنة وسحوبات سريعة تدعم احتياجاتك.</p>
+    </div>
+  </section>
+
+  <section class="info" style="margin-top:12px">
+    <h2 style="font-size:16px;margin:0 0 8px">لماذا كازينو 29Bet؟</h2>
+    <p>نقدّم تجربة استخدام مريحة على الجوال، دعمًا متجاوبًا، ومعلومات واضحة للبدء. إذا كنت مهتمًا بالمحتوى الرياضي المباشر أو بالألعاب الشعبية، فسيرشدك فريقنا إلى كيفية الوصول والاستفادة من المزايا المتاحة لحسابك.</p>
+
+    <div class="pays">
+      <h4>طرق الدفع المتاحة</h4>
+      <ul>
+        <li><img src="assets/img/pay-visa.svg" alt="Visa" height="22" width="70" loading="lazy"></li>
+        <li><img src="assets/img/pay-mastercard.svg" alt="Mastercard" height="22" width="36" loading="lazy"></li>
+        <li><img src="assets/img/pay-usdt.webp" alt="USDT" height="22" width="22" loading="lazy"></li>
+        <li><img src="assets/img/pay-btc.webp" alt="Bitcoin" height="22" width="22" loading="lazy"></li>
+        <li><img src="assets/img/pay-applepay.svg" alt="Apple Pay" height="22" width="54" loading="lazy"></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><h2>أسئلة شائعة</h2></div>
+    <div class="faq">
+      <details open>
+        <summary>كيف أبدأ اللعب في كازينو 29Bet؟</summary>
+        <p>دوّر العجلة في أعلى الصفحة واحصل على كود المكافأة الخاص بك، ثم أرسله عبر واتساب. سيساعدك فريق الدعم في إنشاء حسابك وتفعيل المكافأة خطوة بخطوة.</p>
+      </details>
+      <details>
+        <summary>ما هي الألعاب المتاحة في 29Bet؟</summary>
+        <p>سلوتس، روليت، بلاك جاك، بوكر، وكازينو مباشر مع موزعين حقيقيين، بالإضافة إلى الرهانات الرياضية على أهم المباريات والبطولات.</p>
+      </details>
+      <details>
+        <summary>كيف أستخدم كود المكافأة؟</summary>
+        <p>كل كود يصدر مرة واحدة فقط ويخصّك أنت. احتفظ به وأرسله لفريق الدعم عبر واتساب، وسيتم تفعيل المكافأة في حسابك على 29Bet.</p>
+      </details>
+      <details>
+        <summary>هل يمكنني اللعب من الجوال؟</summary>
+        <p>نعم. 29Bet يعمل مباشرة من متصفح الجوال دون الحاجة إلى تحميل أي تطبيق، ويدعم أنظمة أندرويد و iOS.</p>
+      </details>
+      <details>
+        <summary>ما هي طرق الإيداع والسحب؟</summary>
+        <p>يدعم 29Bet البطاقات البنكية والمحافظ الإلكترونية والعملات الرقمية. سيوضح لك فريق الدعم الطريقة الأنسب لبلدك عبر واتساب.</p>
+      </details>
+    </div>
+  </section>
+
+  <div class="trust">
+    <p>دعم عربي 24/7 • إيداع وسحب سريع • يعمل على الجوال</p>
+    <p><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span> تجربة 29Bet موثوقة لآلاف اللاعبين</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="divider"></div>
+  <p>+18 — الكازينو والرهانات مخصصة لمن هم فوق 18 عامًا. القمار قد يسبب الإدمان؛ العب بمسؤولية وضمن حدود ميزانيتك ولا تراهن بما لا تستطيع خسارته.</p>
+  <p>التواصل عبر واتساب مخصص للدعم والمساعدة في إنشاء الحساب وتفعيل المكافأة.</p>
+  <p>&copy; <span id="year">2026</span> 29Bet.net</p>
+</footer>
+
+<div class="sticky-cta" id="stickyCta">
+  <div class="wrap">
+    <a class="btn btn-wa" id="stickyWaLink" href="#" target="_blank" rel="noopener noreferrer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.71 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.8h-.01a9.8 9.8 0 0 1-4.99-1.37l-.36-.21-3.71.97 1-3.62-.24-.37a9.79 9.79 0 0 1-1.5-5.22c0-5.4 4.4-9.8 9.81-9.8 2.62 0 5.08 1.02 6.93 2.88a9.73 9.73 0 0 1 2.87 6.93c0 5.4-4.4 9.8-9.8 9.8m8.34-18.14A11.72 11.72 0 0 0 12.05 0C5.5 0 .18 5.32.17 11.86c0 2.09.55 4.13 1.59 5.93L.07 24l6.36-1.67a11.8 11.8 0 0 0 5.62 1.43h.01c6.54 0 11.86-5.32 11.87-11.86a11.8 11.8 0 0 0-3.47-8.39"/></svg>
+      <span>فعّل مكافأتك عبر واتساب</span>
+    </a>
+  </div>
+</div>
+
+<script src="assets/js/app.js?v=20260810" defer></script>
 </body>
 </html>

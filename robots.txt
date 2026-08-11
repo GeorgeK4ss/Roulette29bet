@@ -1,0 +1,24 @@
+# robots.txt for roulettewheelbonus.com
+# All crawlers welcome (search engines, link previews, AI assistants)
+
+# ---------------------------------------------------------------------
+# Content Signals — https://contentsignals.org/
+#
+# (a) Content-Signal = yes  -> you may collect content for that use.
+# (b) Content-Signal = no   -> you may not.
+# (c) Not listed            -> neither granted nor restricted.
+#
+# search:   search index + results (links, short excerpts). Not AI summaries.
+# ai-input: feeding content into AI models (RAG, grounding, AI answers).
+# ai-train: training or fine-tuning AI models.
+#
+# ANY RESTRICTIONS EXPRESSED VIA CONTENT SIGNALS ARE EXPRESS RESERVATIONS
+# OF RIGHTS UNDER ARTICLE 4 OF THE EUROPEAN UNION DIRECTIVE 2019/790 ON
+# COPYRIGHT AND RELATED RIGHTS IN THE DIGITAL SINGLE MARKET.
+# ---------------------------------------------------------------------
+
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
+Sitemap: https://roulettewheelbonus.com/sitemap.xml
