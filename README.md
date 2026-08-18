@@ -49,6 +49,7 @@ blocking those silently drops conversion events.
     Caddyfile             server config
     Dockerfile            build
     htaccess-apache-only.txt   NOT used by Railway; for Apache/cPanel hosting
+    .mcp.json             PropellerAds MCP server for Claude Code (see docs/propellerads-mcp.md)
 
 ## Local test
 
